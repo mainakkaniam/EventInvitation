@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { motion } from "framer-motion";
 
 const Form = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Form = () => {
             if (formType === "signup")
             {
                 try {
-                    const res = await fetch("http://localhost:4000/api/signup", {
+                    const res = await fetch("http://localhost:3001/api/signup", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json",
@@ -42,7 +43,7 @@ const Form = () => {
             else
             {
                 try {
-                    const res = await fetch("http://localhost:4000/api/login", {
+                    const res = await fetch("http://localhost:3001/api/login", {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json",
@@ -62,8 +63,20 @@ const Form = () => {
     }
 
   return (
-      <div className="form flex flex-col items-center">
-          <div className="input flex flex-col">
+      <motion.div className="form flex flex-col items-center h-[50vh] justify-evenly"
+      variants={{
+        animate:{
+           opacity:1
+        }
+        }}
+        initial={{
+          opacity:0
+        }}
+        whileInView="animate"
+        transition={{
+          duration: 1,
+        }}>
+          <div className="input flex flex-col gap-y-[4vh]">
               <input type="text" className="text-[2.5vh] outline-none bg-white w-[300px] px-[20px] py-[5px] placeholder:text-red-500 text-red-500 text-center rounded-xl"
                   placeholder="NAME"
                   name="name"
@@ -76,7 +89,7 @@ const Form = () => {
               />
           </div> 
 
-          <button className="text-[2.5vh] w-[250px] text-center py-[3.5px] text-white rounded-2xl bg-gradient-to-r from-red-500 via-red-700 to-yellow-500"
+          <button className="text-[2.5vh] w-[250px] text-center py-[3.5px] text-white rounded-2xl bg-gradient-to-r from-yellow-500 via-red-700 to-red-500"
               onClick={handleSubmit}
           >
               GET VERIFICATION CODE
@@ -85,13 +98,13 @@ const Form = () => {
           <div>
               {
                   formType === "login" ?
-                      <p  className="text-white cursor-pointer underline"
+                      <p  className="text-white cursor-pointer underline text-[17px]"
                           onClick={() => {
                           setFormType("signup")
                           }}>New User? Register now
                       </p>
                       :
-                      <p className="text-white cursor-pointer underline"
+                      <p className="text-white cursor-pointer underline text-[17px]"
                           onClick={() => {
                           setFormType("login")
                           }}>Already registered? SignIn now
@@ -99,7 +112,7 @@ const Form = () => {
               }
           </div>
 
-      </div>
+      </motion.div>
   )
 }
 

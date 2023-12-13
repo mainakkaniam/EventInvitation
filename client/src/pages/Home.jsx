@@ -1,5 +1,6 @@
 import React from 'react'
 import Form from '../components/Form'
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
@@ -11,11 +12,26 @@ const Home = () => {
           />
           <div className="gradient absolute  top-0 h-screen w-screen opacity-[0.6] bg-gradient-to-r from-red-500 via-red-700 to-yellow-500" />
           <div className="main absolute top-0 w-full">
-              <div className="declaration text-white text-center text-[16px] sm:text-[30px]">
+              <motion.div
+                        variants={{
+                            animate:{
+                               marginTop:"0%",
+                               opacity:1
+                            }
+                            }}
+                            initial={{
+                              marginTop: "5%",
+                              opacity:0
+                            }}
+                            whileInView="animate"
+                            transition={{
+                              duration: 1,
+                            }}
+                  className="declaration text-white text-center text-[22x] sm:text-[30px] font-[Montserrat] tracking-[5px] h-[50vh] flex flex-col justify-center">
                   <p>WELCOME TO</p>
-                  <p className="text-[20px] sm:text-[40px] font-bold">EVERYTHING UNIVERSITY</p>
-                  <p>ENTER YOUR DETAILS TO ENROLL</p>
-              </div>
+                  <p className="text-[30px] sm:text-[40px] font-extrabold font-[Liber] tracking-normal">EVERYTHING UNIVERSITY</p>
+                  <p className="font-bold">ENTER YOUR DETAILS TO ENROLL</p>
+              </motion.div>
               <Form/>
           </div>
     </div>
