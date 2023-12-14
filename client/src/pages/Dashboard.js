@@ -29,7 +29,7 @@ const Dashboard = () => {
     },[])
 
     const handleAdminCommand = async () => {
-        const res = await fetch("http://localhost:3001/api/students");
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/students`);
         const response = await res.json();
         console.log(response)
         setData(response);
