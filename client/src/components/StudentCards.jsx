@@ -1,6 +1,7 @@
 import React from 'react'
 
-const StudentCards = ({data}) => {
+const StudentCards = ({ data }) => {
+  console.log(data)
   return (
       <div className="flex flex-wrap">
           <table>
@@ -10,14 +11,14 @@ const StudentCards = ({data}) => {
               </thead>
               <tbody>
               {
-              data.map((item) => {
+              data.map((item) => (
                   <>
                       <tr>
                       <td>{item.name}</td>
                       <td>{item.email}</td>
                       </tr>
                   </>
-              })
+              ))
               }
               </tbody>
           </table>

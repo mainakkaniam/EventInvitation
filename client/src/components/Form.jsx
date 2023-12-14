@@ -17,12 +17,16 @@ const Form = () => {
         {
             toast.error("Please enter all your credentials!");
         }
+        else if (handleVerifyEmail(data.email) === false)
+        {
+            toast.error("Please enter correct email !")
+        }
         else
         {
             if (formType === "signup")
             {
                 try {
-                    const res = await fetch("http://localhost:3001/api/signup", {
+                    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/signup`, {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json",
@@ -30,9 +34,16 @@ const Form = () => {
                         body: JSON.stringify(data)
                     });
                     const response = await res.json();
-                    toast.success(response);
-                    localStorage.setItem("user", data.name);
-                    navigate("/dashboard")
+                    if (res.status === 200)
+                    {
+                        toast.success(response.message);
+                        localStorage.setItem("user", data.email);
+                        navigate("/dashboard")
+                    }
+                    else
+                    {
+                        toast.error(response.message)
+                     }
                 }
                 catch (error)
                 {
@@ -43,7 +54,7 @@ const Form = () => {
             else
             {
                 try {
-                    const res = await fetch("http://localhost:3001/api/login", {
+                    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/login`, {
                         method: "POST",
                         headers: {
                             "Content-type": "application/json",
@@ -51,8 +62,14 @@ const Form = () => {
                         body: JSON.stringify(data)
                     });
                     const response = await res.json();
-                    toast.success(response);
-                    navigate("/dashboard");
+                    if (res.status === 200)
+                    {
+                        toast.success(response.message);
+                        localStorage.setItem("user", data.email);
+                        navigate("/dashboard");
+                    }
+                    else
+                        toast.error(response.message)
                 }
                 catch (error)
                 {
@@ -60,6 +77,13 @@ const Form = () => {
                 }
             }
         }
+    }
+
+    const handleVerifyEmail = (email) => {
+        if (!email.match((/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)))
+            return false;
+        else
+            return true;
     }
 
   return (
@@ -78,11 +102,13 @@ const Form = () => {
         }}>
           <div className="input flex flex-col gap-y-[4vh]">
               <input type="text" className="text-[2.5vh] outline-none bg-white w-[300px] px-[20px] py-[5px] placeholder:text-red-500 text-red-500 text-center rounded-xl"
+                  value={data.name}
                   placeholder="NAME"
                   name="name"
                   onChange={handleChange}
               />
               <input type="text" className="text-[2.5vh] outline-none bg-white w-[300px] px-[10px] py-[5px] placeholder:text-red-500 text-red-500 text-center rounded-xl"
+                  value={data.email}
                   placeholder="EMAIL"
                   name="email"
                   onChange={handleChange}
@@ -92,7 +118,9 @@ const Form = () => {
           <button className="text-[2.5vh] w-[250px] text-center py-[3.5px] text-white rounded-2xl bg-gradient-to-r from-yellow-500 via-red-700 to-red-500"
               onClick={handleSubmit}
           >
-              GET VERIFICATION CODE
+              {
+                  formType==="signup"? "GET STARTED":"WELCOME BACK"
+              }
           </button>
 
           <div>

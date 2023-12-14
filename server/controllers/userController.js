@@ -3,14 +3,14 @@ const User = require("../model/User");
 exports.signup = async (req, res) => {
     try
     {
-        const user = await User.find(req.body);
-        if (user)
+        const user = await User.find({email:req.body.email});
+        if (user.length>0)
         {
-            res.status(500).json({ message: "User already registered !" });
+            res.status(500).json({ message: "Email already registered !" });
         }
         else {
             await User.create(req.body);
-            res.json({ message: "Registered successfully !" });
+            res.status(200).json({ message: "Registered successfully !" });
         } 
         
     }
@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const user = await User.find(req.body);
-        if (user)
+        if (user.length>0)
             res.status(200).json({ message: "Logged In Successfully !" });
         else
              res.status(500).json({ message: "User not registered !" });
